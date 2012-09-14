@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Point Manager</title>
+  <meta charset="utf-8" />
+  <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://raw.github.com/jdjkelly/jQuery-haversine/master/jquery.haversine.0.2.js"></script>
+  <script type="text/javascript" src="https://raw.github.com/HPNeo/gmaps/master/gmaps.js"></script>
+  <script type="text/javascript" src="points.js"></script>
+  <script type="text/javascript" src="point_manager.js"></script>
+  <style type="text/css">
+    html, body {
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    #map {
+      width: 80%;
+      height: 100%;
+      float: left;
+      background: #afafaf;
+    }
+    #points {
+      width: 20%;
+      height: 100%;
+      float: left;
+      background: #cecece;
+    }
+  </style>
+  <script type="text/javascript">
+    var map, point_manager;
+    $(document).ready(function(){
+      map = new GMaps({
+        div: '#map',
+        lat: -12.091489977707607,
+        lng: -77.05858219999999
+      });
+      for(var i=0; i < points.length; i++) {
+        var point = points[i];
+        map.addMarker({
+          title: point.name,
+          lat: point.latitude,
+          lng: point.longitude
+        });
+      }
+
+      point_manager = new PointManager(points);
+    });
+  </script>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="points"></div>
+</body>
+</html>
