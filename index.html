@@ -44,7 +44,19 @@
     }
   </style>
   <script type="text/javascript">
-    var map, point_manager, initial, closest;
+    var map, point_manager, initial, closest, in_path = [];
+
+    function add_closest(initial) {
+      closest = point_manager.closest(initial);
+
+      while(in_path.indexOf(closest.id) > -1)
+        closest = point_manager.closest(initial, 1);
+
+      in_path.push(closest.id);
+
+      $('#points_list').append('<li><a href="#" data-index="' + points.indexOf(initial) + '">' + initial.name + '</a> - <a href="#" data-index="' + points.indexOf(closest) + '">' + closest.name + '</a></li>');
+    };
+
     $(document).ready(function(){
       $(document).on('click', '#points_list a', function(e){
         e.preventDefault();
@@ -74,10 +86,7 @@
       }
 
       point_manager = new PointManager(points);
-      initial = points[0];
-      closest = point_manager.closest(initial, points);
-
-      $('#points_list').append('<li><a href="#" data-index="' + points.indexOf(initial) + '">' + initial.name + '</a> - <a href="#" data-index="' + points.indexOf(closest) + '">' + closest.name + '</a></li>');
+      add_closest(points[0]);
     });
   </script>
 </head>
