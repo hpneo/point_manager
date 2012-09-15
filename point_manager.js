@@ -23,12 +23,12 @@ PointManager = (function() {
       return $.fn.haversine(origin.latitude, origin.longitude, destination.latitude, destination.longitude, 'km');
     };
 
-    PointManager.prototype.closest = function(point, points_range, skip) {
+    PointManager.prototype.closest = function(point, skip) {
       console.time('closest');
       if(skip == null)
         skip = 0;
 
-      var temp_points_range = points_range;
+      var temp_points_range = this.points;
       var distances = this.get_distances(point, temp_points_range);
 
       for(var i=0; i < skip; i++) {

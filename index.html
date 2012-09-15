@@ -16,6 +16,19 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      font-family: sans-serif;
+    }
+    h2 {
+      margin: 0;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      margin: 2px 12px;
+      padding: 0;
     }
     #map {
       width: 80%;
@@ -31,8 +44,20 @@
     }
   </style>
   <script type="text/javascript">
-    var map, point_manager;
+    var map, point_manager, initial, closest;
     $(document).ready(function(){
+      $(document).on('click', '#points_list a', function(e){
+        e.preventDefault();
+
+        var index = $(this).data('index');
+        var marker = map.markers[index];
+        if(marker.getAnimation() != 0)
+          map.markers[index].setAnimation(0);
+        else
+          map.markers[index].setAnimation(1);
+      });
+
+
       map = new GMaps({
         div: '#map',
         lat: -12.091489977707607,
@@ -43,16 +68,24 @@
         map.addMarker({
           title: point.name,
           lat: point.latitude,
-          lng: point.longitude
+          lng: point.longitude,
+          animation: 0
         });
       }
 
       point_manager = new PointManager(points);
+      initial = points[0];
+      closest = point_manager.closest(initial, points);
+
+      $('#points_list').append('<li><a href="#" data-index="' + points.indexOf(initial) + '">' + initial.name + '</a> - <a href="#" data-index="' + points.indexOf(closest) + '">' + closest.name + '</a></li>');
     });
   </script>
 </head>
 <body>
   <div id="map"></div>
-  <div id="points"></div>
+  <div id="points">
+    <h2>Points</h2>
+    <ul id="points_list"></ul>
+  </div>
 </body>
 </html>
