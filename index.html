@@ -44,15 +44,11 @@
     }
   </style>
   <script type="text/javascript">
-    var map, point_manager, initial, closest, in_path = [];
+    var map, point_manager, initial, closest;
+    var in_path = [];
 
     function add_closest(initial) {
       closest = point_manager.closest(initial);
-
-      while(in_path.indexOf(closest.id) > -1)
-        closest = point_manager.closest(initial, 1);
-
-      in_path.push(closest.id);
 
       $('#points_list').append('<li><a href="#" data-index="' + points.indexOf(initial) + '">' + initial.name + '</a> - <a href="#" data-index="' + points.indexOf(closest) + '">' + closest.name + '</a></li>');
     };

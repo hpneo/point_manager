@@ -4,6 +4,7 @@ PointManager = (function() {
 
   function PointManager(points) {
     this.points = points;
+    this.in_path = [];
 
     PointManager.prototype.get_distances = function(point, points_range) {
       var distances = [];
@@ -23,12 +24,12 @@ PointManager = (function() {
       return $.fn.haversine(origin.latitude, origin.longitude, destination.latitude, destination.longitude, 'km');
     };
 
-    PointManager.prototype.closest = function(point, skip) {
+    PointManager.prototype.get_closest = function(point, skip) {
       console.time('closest');
       if(skip == null)
         skip = 0;
 
-      var temp_points_range = this.points;
+      var temp_points_range = this.points.slice(0);
       var distances = this.get_distances(point, temp_points_range);
 
       for(var i=0; i < skip; i++) {
@@ -47,17 +48,21 @@ PointManager = (function() {
       return temp_points_range[index];
     };
 
-    /*PointManager.prototype.order = function() {
-      console.time('order');
-      this.ordered = [];
-      for(var i=0; i < this.points.length; i++) {
-        this.ordered.push(this.closest(this.points[i], this.points));
+    PointManager.prototype.closest = function(point) {
+      var closest = this.get_closest(point);
+
+      var i = 1;
+
+      while(this.in_path.indexOf(closest.id) > -1) {
+        closest = this.get_closest(point, i);
+
+        i++;
       }
 
-      console.timeEnd('order');
+      this.in_path.push(closest.id);
 
-      return this.ordered;
-    };*/
+      return closest;
+    };
   }
 
   return PointManager;
